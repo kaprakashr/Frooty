@@ -1,0 +1,13 @@
+>> python Froot_club.py --help
+
+----------------------------
+| FROOTY AUTOMATION SUITE  |
+----------------------------
+
+USAGE: 
+[-D] [Filename] (or) [--device] [Filename]
+[-T] [Filename] (or) [--case] [Filename]
+
+EXAMPLE: 
+
+>> Froot_Club -D "DEVICES/Sample_Device.json" -T "TESTCASES/Sample_TestCase.py"
