@@ -1,0 +1,45 @@
+FROOTY->STARTING RUN: 	2017-08-1223:59:31
+
+[23:59:31]: SELECTED DEVICE FILE-> DEVICES/Sample_Device.json
+
+[23:59:31]: SELECTED TEST CASE FILE-> TESTCASES/Sample_Test_Case.py
+
+[23:59:31]: Jump to device file now.,
+[23:59:31]: DEVICE :  DEVICE_2
+[23:59:31]: 	       NAME	:server
+[23:59:31]:          IP	:20.1.1.1
+[23:59:31]:          PORT    	:1290
+[23:59:31]:          MODE    	:telnet
+[23:59:31]:          USER    	:server
+[23:59:31]:          PASS    	:root123
+[23:59:31]: DEVICE :  DEVICE_1
+[23:59:31]: 	       NAME	:dut
+[23:59:31]:          IP	:10.1.1.1
+[23:59:31]:          PORT    	:22
+[23:59:31]:          MODE    	:ssh
+[23:59:31]:          USER    	:cisco
+[23:59:31]:          PASS    	:root123
+[23:59:31]: Starting Test Case 001
+
+[23:59:31]: ERROR: Please return 1 \(or\) 0 in your test case
+
+[23:59:31]: ERROR: Results of this test case is not calculated for Regression/Smoke/Final results
+
+[23:59:31]: Starting Test Case 002
+
+[23:59:31]: <function TEST_CASE_002 at 0x7fbef535e8c0>-->RESULT: PASSED
+[23:59:31]: 
+TEST COMPLETED...!!
+
+[23:59:31]: ============================
+[23:59:31]: SUMMARY OF RESULTS
+[23:59:31]: TOTAL TEST CASES RAN    : 2
+[23:59:31]: TOTAL TEST CASES PASSED : 1
+[23:59:31]: TOTAL TEST CASES FAILED : 0
+[23:59:31]: TOTAL TEST CASES BLOCKED: 1
+[23:59:31]: ============================
+
+[23:59:31]: 
+
+
+

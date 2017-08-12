@@ -1,0 +1,18 @@
+{
+  "DEVICE_1": {
+    "name": "dut",
+    "ip": "10.1.1.1",
+    "port": "22",
+    "mode": "ssh",
+    "username": "cisco",
+    "password": "root123"
+  },
+  "DEVICE_2": {
+    "name": "server",
+    "ip": "20.1.1.1",
+    "port": "1290",
+    "mode": "telnet",
+    "username": "server",
+    "password": "root123"
+  }
+}
