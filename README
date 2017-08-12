@@ -1,13 +1,22 @@
->> python Froot_club.py --help
 
-----------------------------
-| FROOTY AUTOMATION SUITE  |
-----------------------------
+What is it?
+  A wholistic automation suite designed for those who dont wan't to code. Every thing is Data Driven.!
+    All you need to do is to,
+      (1) Populate your device details
+      (2) Create Steps in the test cases
+      The automation suite does other works!
 
-USAGE: 
-[-D] [Filename] (or) [--device] [Filename]
-[-T] [Filename] (or) [--case] [Filename]
+How to Start with?
+  >> python Froot_club.py --help
 
-EXAMPLE: 
+  ----------------------------
+  | FROOTY AUTOMATION SUITE  |
+  ----------------------------
 
->> Froot_Club -D "DEVICES/Sample_Device.json" -T "TESTCASES/Sample_TestCase.py"
+  USAGE: 
+  [-D] [Filename] (or) [--device] [Filename]
+  [-T] [Filename] (or) [--case] [Filename]
+
+  EXAMPLE: 
+
+  >> Froot_Club -D "DEVICES/Sample_Device.json" -T "TESTCASES/Sample_TestCase.py"
