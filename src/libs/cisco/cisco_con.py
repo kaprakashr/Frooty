@@ -210,7 +210,7 @@ class ssh_connection(object):
             else:
                 print "Error : ssh session is not established"
 	except Exception as err:
-	    print "Error : %s" % erir
+	    print "Error : %s" % err
 
     def configure_command(self,command):
         '''This API is used to configure command in privileged mode'''
