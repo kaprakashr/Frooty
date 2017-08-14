@@ -1,5 +1,5 @@
 #----------------- FROOTY AUTOMATION FRAMEWORK ---------------#
-# Author        : Saroj Mordha & Kalyana prakash Ravi
+# Author        : Saroj Mirdha & Kalyana prakash Ravi
 # Date          : 14/1/2017
 # Version       : Base->Aadi
 
@@ -7,19 +7,20 @@
 
 class telnet_connection(object):
     '''This class is used to handle login,logout,cli command execution using telnet'''
-    def __init__(self,ip,username,password,enable_password=None,delay="5",port="23"):
+    def __init__(self,dictionary):
 	import telnetlib
 	import time
 	import re
 	self.telnetlib = telnetlib
 	self.time = time
 	self.re = re
-	self.ip = ip
-	self.port = int(port)
-        self.username = username
-        self.password = password
-	self.enable_password = enable_password
-	self.delay = float(delay)
+	self.copy = dictionary
+	self.ip = str(dictionary['ip'])
+	self.port = int(dictionary['port'])
+        self.username = str(dictionary['username'])
+        self.password = str(dictionary['password'])
+	self.enable_password = str(dictionary['enable_password'])
+	self.delay = float("5")
 
     def connect(self):
 	'''This function is used for create telnet sesssion to Router'''
@@ -128,20 +129,21 @@ class telnet_connection(object):
 
 class ssh_connection(object):
     '''This class is used to handle login,logout,cli command execution using ssh'''
-    def __init__(self,ip,username,password,enable_password=None,buffer="65535",delay="5",port="22"):
+    def __init__(self,dictionary):
         import paramiko
         import time
         import re
         self.paramiko = paramiko
         self.time = time
         self.re = re
-        self.ip = ip
-        self.port = int(port)
-	self.buffer = int(buffer)
-	self.enable_password = enable_password
-        self.username = username
-        self.password = password
-        self.delay = float(delay)
+	self.copy = dictionary
+        self.ip = str(dictionary['ip'])
+        self.port = int(dictionary['port'])
+	self.buffer = 65535
+	self.enable_password = str(dictionary['enable_password'])
+        self.username = str(dictionary['username'])
+        self.password = str(dictionary['password'])
+        self.delay = float("5")
 
     def connect(self):
        '''This function is used for create ssh sesssion to Router'''
