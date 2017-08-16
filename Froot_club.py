@@ -36,7 +36,7 @@ if sys.argv[1] == "--help" or sys.argv[1] == "-h":
     print ("[-D] [Filename] (or) [--device] [Filename]")
     print ("[-T] [Filename] (or) [--case] [Filename]\n")
     print ("EXAMPLE: ") 
-    print ("Froot_Club -D \"DEVICES/Sample_Device.json\" -T \"TESTCASES/Sample_TestCase.py\"\n\n")
+    print ("Froot_club.py -D \"DEVICES/Sample_Device.json\" -T \"TESTCASES/Sample_Test_Case.py\"\n\n")
     exit(0)
 
 #Exract Parmeters
@@ -58,7 +58,7 @@ for var in sys.argv:
 ccwd = os.getcwd()
 log_folder = str(ccwd) + "/LOGS/"
 print ("Init log->" + log_folder)
-__builtin__.log = logger(log_folder)
+__builtin__.log = logger(log_folder, test_case_file)
 log = __builtin__.log
 
 #Start
