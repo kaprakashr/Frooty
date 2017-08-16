@@ -1,0 +1,11 @@
+{
+  "DEVICE_1": {
+    "name": "dut",
+    "ip": "10.1.1.1",
+    "port": "22",
+    "mode": "ssh",
+    "username": "cisco",
+    "password": "root123",
+    "enable_password" : "abc123"
+  }
+  }
