@@ -16,11 +16,13 @@ class logger:
     fhandle = ""
 
     #give the log file location when you take an instance of the logging class
-    def __init__(self,log_location):
+    def __init__(self,log_location,name):
 	self.log_loc = log_location
-	self.fname = self.log_loc + re.sub(r'\s+', '', datetime.now().strftime("%Y-%m-%d %H:%M:%S"))  + ".log"	
+	name_tmp = name.split(".")
+	name_tmp = name_tmp[0].split("/")
+	self.fname = self.log_loc + name_tmp[-1] + "_" + re.sub(r'\s+', '', datetime.now().strftime("%Y-%m-%d_%H:%M:%S"))  + ".log"	
 	self.fhandle = open(self.fname,'w')
-	self.fhandle.write("FROOTY->STARTING RUN: 	" + re.sub(r'\s+', '', datetime.now().strftime("%Y-%m-%d %H:%M:%S")) + "\n\n")
+	self.fhandle.write("FROOTY->STARTING RUN: 	" + re.sub(r'\s+', '', datetime.now().strftime("%Y-%m-%d_%H:%M:%S")) + "\n\n")
 
     def rite(self,*args):
 	temp_str = ""
