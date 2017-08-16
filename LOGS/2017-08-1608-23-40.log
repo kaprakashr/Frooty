@@ -1,0 +1,143 @@
+FROOTY->STARTING RUN: 	2017-08-1608:23:40
+
+[08:23:40]: SELECTED DEVICE FILE-> DEVICES/telnet_router.json
+
+[08:23:40]: SELECTED TEST CASE FILE-> TESTCASES/telnet_router.py
+
+[08:23:40]: Jump to device file now.,
+[08:23:40]: DEVICE :  DEVICE_1
+[08:23:40]: 	       NAME	:dut
+[08:23:40]:          IP	:192.168.137.213
+[08:23:40]:          PORT    	:23
+[08:23:40]:          MODE    	:telnet
+[08:23:40]:          USER    	:abc123
+[08:23:40]:          PASS    	:abc123
+[08:23:40]: Starting Test Case 001
+
+[08:24:40]: 
+R1#
+R1#show version
+Cisco IOS Software, 7200 Software (C7200-JK9S-M), Version 12.4(13b), RELEASE SOFTWARE (fc3)
+Technical Support: http://www.cisco.com/techsupport
+Copyright (c) 1986-2007 by Cisco Systems, Inc.
+Compiled Wed 25-Apr-07 03:18 by prod_rel_team
+
+ROM: ROMMON Emulation Microcode
+BOOTLDR: 7200 Software (C7200-JK9S-M), Version 12.4(13b), RELEASE SOFTWARE (fc3)
+
+R1 uptime is 46 minutes
+System returned to ROM by unknown reload cause - suspect boot_data[BOOT_COUNT] 0x0, BOOT_COUNT 0, BOOTDATA 19
+System image file is "tftp://255.255.255.255/unknown"
+
+
+This product contains cryptographic features and is subject to United
+States and local country laws governing import, export, transfer and
+use. Delivery of Cisco cryptographic products does not imply
+third-party authority to import, export, distribute or use encryption.
+Importers, exporters, distributors and users are responsible for
+compliance with U.S. and local country laws. By using this product you
+agree to comply with applicable laws and regulations. If you are unable
+to comply with U.S. and local laws, return this product immediately.
+
+A summary of U.S. laws governing Cisco cryptographic products may be found at:
+http://www.cisco.com/wwl/export/crypto/tool/stqrg.html
+
+If you require further assistance please contact us by sending email to
+export@cisco.com.
+
+Cisco 7206VXR (NPE400) processor (revision A) with 491520K/32768K bytes of memory.
+Processor board ID 4279256517
+R7000 CPU at 150MHz, Implementation 39, Rev 2.1, 256KB L2 Cache
+6 slot VXR midplane, Version 2.1
+
+Last reset from power-on
+
+PCI bus mb0_mb1 (Slots 0, 1, 3 and 5) has a capacity of 600 bandwidth points.
+Current configuration on bus mb0_mb1 has a total of 600 bandwidth points. 
+This configuration is within the PCI bus capacity and is supported. 
+
+PCI bus mb2 (Slots 2, 4, 6) has a capacity of 600 bandwidth points.
+Current configuration on bus mb2 has a total of 200 bandwidth points 
+This configuration is within the PCI bus capacity and is supported. 
+
+Please refer to the following document "Cisco 7200 Series Port Adaptor
+Hardware Configuration Guidelines" on Cisco.com <http://www.cisco.com>
+for c7200 bandwidth points oversubscription and usage guidelines.
+
+
+4 FastEthernet interfaces
+4 Serial interfaces
+509K bytes of NVRAM.
+
+8192K bytes of Flash internal SIMM (Sector size 256K).
+Configuration register is 0x2102
+
+R1#
+[08:24:40]: <function TEST_CASE_001 at 0xb71f517c>-->RESULT: PASSED
+[08:24:40]: Starting Test Case 002
+
+[08:25:12]: 
+R1#
+R1#configure terminal
+Enter configuration commands, one per line.  End with CNTL/Z.
+R1(config)#int fastEthernet 2/0
+R1(config-if)#ip address 1.1.1.1 255.0.0.0
+R1(config-if)#end
+R1#
+[08:25:42]: 
+R1#
+R1#show ip interface fastEthernet 2/0
+FastEthernet2/0 is administratively down, line protocol is down
+  Internet address is 1.1.1.1/8
+  Broadcast address is 255.255.255.255
+  Address determined by setup command
+  MTU is 1500 bytes
+  Helper address is not set
+  Directed broadcast forwarding is disabled
+  Outgoing access list is not set
+  Inbound  access list is not set
+  Proxy ARP is enabled
+  Local Proxy ARP is disabled
+  Security level is default
+  Split horizon is enabled
+  ICMP redirects are always sent
+  ICMP unreachables are always sent
+  ICMP mask replies are never sent
+  IP fast switching is enabled
+  IP fast switching on the same interface is disabled
+  IP Flow switching is disabled
+  IP CEF switching is enabled
+  IP Fast switching turbo vector
+  IP Normal CEF switching turbo vector
+  IP multicast fast switching is enabled
+  IP multicast distributed fast switching is disabled
+  IP route-cache flags are Fast, CEF
+  Router Discovery is disabled
+  IP output packet accounting is disabled
+  IP access violation accounting is disabled
+  TCP/IP header compression is disabled
+  RTP/IP header compression is disabled
+  Policy routing is disabled
+  Network address translation is disabled
+  BGP Policy Mapping is disabled
+  WCCP Redirect outbound is disabled
+  WCCP Redirect inbound is disabled
+  WCCP Redirect exclude is disabled
+R1#
+[08:25:42]: Internet address 1.1.1.1/8 is configured properly
+[08:25:42]: <function TEST_CASE_002 at 0xb71f51b4>-->RESULT: PASSED
+[08:25:42]: 
+TEST COMPLETED...!!
+
+[08:25:42]: ============================
+[08:25:42]: SUMMARY OF RESULTS
+[08:25:42]: TOTAL TEST CASES RAN    : 2
+[08:25:42]: TOTAL TEST CASES PASSED : 2
+[08:25:42]: TOTAL TEST CASES FAILED : 0
+[08:25:42]: TOTAL TEST CASES BLOCKED: 0
+[08:25:42]: ============================
+
+[08:25:42]: 
+
+
+
