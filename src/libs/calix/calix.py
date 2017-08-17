@@ -5,7 +5,7 @@
 
 # BUG 1: Open: call disble paging in all the functions to aviod getting stuck
 
-class telnet_connection(object):
+class calix_telnet_connection(object):
     '''This class is used to handle login,logout,cli command execution using telnet'''
     def __init__(self,dictionary):
 	import telnetlib
@@ -96,7 +96,7 @@ class telnet_connection(object):
 	except Exception as err:
 	    print "Error : %s" % err
 
-class ssh_connection(object):
+class calix_ssh_connection(object):
     '''This class is used to handle login,logout,cli command execution using ssh'''
     def __init__(self,dictionary):
         import paramiko
