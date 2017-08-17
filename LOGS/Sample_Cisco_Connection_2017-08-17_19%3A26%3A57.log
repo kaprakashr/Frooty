@@ -1,0 +1,118 @@
+FROOTY->STARTING RUN: 	2017-08-17_19:26:57
+
+[19:26:57]: SELECTED DEVICE FILE-> DEVICES/Sample_Cisco_Device.json
+
+[19:26:57]: SELECTED TEST CASE FILE-> TESTCASES/Sample_Cisco_Connection.py
+
+[19:26:57]: Jump to device file now.,
+[19:26:57]: DEVICE :  DEVICE_2
+[19:26:57]: 	       NAME	:dut
+[19:26:57]:          IP	:192.168.137.213
+[19:26:57]:          PORT    	:22
+[19:26:57]:          MODE    	:ssh
+[19:26:57]:          USER    	:abc123
+[19:26:57]:          PASS    	:abc123
+[19:26:57]: DEVICE :  DEVICE_1
+[19:26:57]: 	       NAME	:dut
+[19:26:57]:          IP	:192.168.137.213
+[19:26:57]:          PORT    	:23
+[19:26:57]:          MODE    	:telnet
+[19:26:57]:          USER    	:abc123
+[19:26:57]:          PASS    	:abc123
+[19:26:57]: Starting Test Case 001
+
+[19:27:28]: 
+R1#
+R1#configure terminal
+Enter configuration commands, one per line.  End with CNTL/Z.
+R1(config)#int fastEthernet 0/1
+R1(config-if)#no ip address 1.1.1.1 255
+[19:28:06]: 
+R1#
+R1#
+[19:28:06]: <function TEST_CASE_001 at 0xb7268064>-->RESULT: PASSED
+[19:28:06]: Starting Test Case 002
+
+[19:29:05]: 
+R1#
+R1#terminal length 0
+R1#
+R1#
+R1#
+R1#
+R1#
+R1#
+R1#configure terminal
+Enter configuration commands, one per line.  End with CNTL/Z.
+R1(config)#
+R1(config)#int fastEthernet 0/1
+R1(config-if)#
+R1(config-if)#ip address 1.1.1.1 255.0.0.0
+R1(config-if)#
+R1(config-if)#end
+R1#
+R1#
+[19:29:41]: 
+R1#
+R1#terminal length 0
+R1#
+R1#
+R1#
+R1#
+R1#
+R1#
+R1#show ip interface fastEthernet 0/1
+FastEthernet0/1 is administratively down, line protocol is down
+  Internet address is 1.1.1.1/8
+  Broadcast address is 255.255.255.255
+  Address determined by setup command
+  MTU is 1500 bytes
+  Helper address is not set
+  Directed broadcast forwarding is disabled
+  Outgoing access list is not set
+  Inbound  access list is not set
+  Proxy ARP is enabled
+  Local Proxy ARP is disabled
+  Security level is default
+  Split horizon is enabled
+  ICMP redirects are always sent
+  ICMP unreachables are always sent
+  ICMP mask replies are never sent
+  IP fast switching is enabled
+  IP fast switching on the same interface is disabled
+  IP Flow switching is disabled
+  IP CEF switching is enabled
+  IP CEF Fast switching turbo vector
+  IP multicast fast switching is enabled
+  IP multicast distributed fast switching is disabled
+  IP route-cache flags are Fast, CEF
+  Router Discovery is disabled
+  IP output packet accounting is disabled
+  IP access violation accounting is disabled
+  TCP/IP header compression is disabled
+  RTP/IP header compression is disabled
+  Policy routing is disabled
+  Network address translation is disabled
+  BGP Policy Mapping is disabled
+  WCCP Redirect outbound is disabled
+  WCCP Redirect inbound is disabled
+  WCCP Redirect exclude is disabled
+R1#
+R1#
+[19:29:41]: Internet address 1.1.1.1/8 is configured properly
+[19:29:41]: <function TEST_CASE_002 at 0xb726809c>-->RESULT: PASSED
+[19:29:41]: 
+TEST COMPLETED...!!
+
+[19:29:41]: ============================
+[19:29:41]: SUMMARY OF RESULTS
+[19:29:41]: TOTAL TEST CASES RAN    : 2
+[19:29:41]: TOTAL TEST CASES PASSED : 2
+[19:29:41]: TOTAL TEST CASES FAILED : 0
+[19:29:41]: TOTAL TEST CASES BLOCKED: 0
+[19:29:41]: ============================
+
+[19:29:41]: 
+
+
+
