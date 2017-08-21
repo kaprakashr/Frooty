@@ -1,0 +1,20 @@
+{
+"DEVICE_1": {
+    "name": "dut",
+    "ip": "192.168.137.213",
+    "port" : "23",
+    "mode" : "telnet",
+    "username": "abc123",
+    "password": "abc123",
+    "enable_password": "abc123"
+  },
+ "DEVICE_2": {
+    "name": "dut",
+    "ip": "192.168.137.213",
+    "port" : "22",
+    "mode" : "ssh",
+    "username": "abc123",
+    "password": "abc123",
+    "enable_password": "abc123"
+  }
+}
