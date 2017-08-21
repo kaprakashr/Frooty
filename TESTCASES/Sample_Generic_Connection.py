@@ -6,13 +6,21 @@ import_path = str(os.getcwd())
 sys.path.append(import_path)
 from src.libs.cisco.cisco_con import *
 from src.libs.Generic.Generic_Connection import *
+from src.libs.string.verify import *
 
 def TEST_CASE_001():
     log.rite("Starting Test Case 001\n")
     connect_to_generic_device = generic_telnet_connection(devices['DEVICE_1'])
-    print connect_to_generic_device.show_command('show version')
+    output = connect_to_generic_device.show_command('uname -r')
     log.rite(str(connect_to_generic_device.show_command('show version')))
-    return 1
+    #pattern to find
+    pattern_to_find = "gene"
+    #find(pattern, string)
+    result = find(pattern_to_find, output)
+    if result:
+        return 1
+    else:
+	return 0
 
 def TEST_CASE_002():
     log.rite("Starting Test Case 002\n")
