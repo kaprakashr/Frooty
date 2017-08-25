@@ -146,6 +146,7 @@ class calix_ssh_connection(object):
             if self.ssh_conn != None:
                self.time.sleep(self.delay)
                self.ssh_conn.send("cli\r\n\r\n")
+	       self.time.sleep(self.delay)
                if type(command) == str:
                    self.ssh_conn.send(command+'\r\n')
 		   self.time.sleep(self.delay)
@@ -167,7 +168,9 @@ class calix_ssh_connection(object):
 	    if session_op != None:
 	       self.time.sleep(self.delay)
 	       self.ssh_conn.send("cli\r\n\r\n") 
+	       self.time.sleep(self.delay)
 	       self.ssh_conn('configure\r\n')
+	       self.time.sleep(self.delay)
 	       self.ssh_conn(command+'\r\n')
 	       self.time.sleep(self.delay)
 	       if self.ssh_conn.recv_ready():
@@ -184,7 +187,9 @@ class calix_ssh_connection(object):
            if session_op != None:
                self.time.sleep(self.delay)
                self.ssh_conn.send("cli\r\n\r\n")
+	       self.time.sleep(self.delay)
                self.ssh_conn.send('configure\r\n')
+	       self.time.sleep(self.delay)
                if type(commands_list) == str:
                    self.ssh_conn.send(command_list+'\r\n')
 		   self.time.sleep(self.delay)
