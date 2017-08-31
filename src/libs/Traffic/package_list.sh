@@ -22,3 +22,9 @@ cd pip-9.0.1
 
 #Check python module version info
 ~/local/bin/pip freeze 
+
+#Install Pysnmp
+~/local/bin/pip install pysnmp
+
+#Install hnmp
+~/local/bin/pip install hnmp
