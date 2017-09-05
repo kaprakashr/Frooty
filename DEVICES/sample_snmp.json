@@ -1,0 +1,8 @@
+DEVICE_1 =  {
+    "name": "dut",
+    "ip": "127.0.0.1",
+    "snmp_port": "161",
+    "community_string" : "public"
+  }
+  
+  
