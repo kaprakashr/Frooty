@@ -19,6 +19,10 @@ version=$(which python 2>&1)
 $version setup.py install
 #python setup.py install
 
+#Install setuptools 
+wget https://bootstrap.pypa.io/ez_setup.py
+$version ez_setup.py
+
 #Install scapy
 pip install scapy
 
@@ -30,3 +34,5 @@ pip install pysnmp
 
 #Install hnmp
 pip install hnmp
+
+
