@@ -155,11 +155,16 @@ class calix_ssh_connection(object):
                        self.ssh_conn.send(cmd+'\r\n')
                        self.time.sleep(self.delay)
 	       if self.ssh_conn.recv_ready():
+		    self.close()
                     return self.ssh_conn.recv(self.buffer)
             else:
+		self.close()
                 print "Error : ssh session is not established"
+		return "ERROR"
 	except Exception as err:
 	    print "Error : %s" % err
+	    self.close()
+	    return "ERROR"
 
     def configure_command(self,command):
         '''This API is used to configure command in privileged mode'''
@@ -174,12 +179,16 @@ class calix_ssh_connection(object):
 	       self.ssh_conn(command+'\r\n')
 	       self.time.sleep(self.delay)
 	       if self.ssh_conn.recv_ready():
+		   self.close()
 	           return self.ssh_conn.recv(self.buffer)
 	    else:
+		self.close()
 	        print "Error : ssh session is not established"
+		return "ERROR"
 	except Exception as err:
+	    self.close()
 	    print "Error : %s" % err
-	
+	    return "ERROR"
     def configure_multiple_command(self,commands_list):
        '''This API is used to configure multiple set of cli commands'''
        try:
@@ -198,8 +207,13 @@ class calix_ssh_connection(object):
                        self.ssh_conn.send(commands_list[command]+'\r\n')
             	       self.time.sleep(self.delay)
                if self.ssh_conn.recv_ready():
+		   self.close()
                    return self.ssh_conn.recv(self.buffer)
            else:
-               print "Error : ssh is not established"	
+	       self.close()
+               print "Error : ssh is not established"
+	       return "ERROR"
        except Exception as err:
+	   self.close()
            print "Error : %s" % err
+	   return "ERROR"
