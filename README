@@ -20,3 +20,19 @@ How to Start with?
   EXAMPLE: 
 
   >> Froot_Club -D "DEVICES/Sample_Device.json" -T "TESTCASES/Sample_TestCase.py"
+
+
+ Running Frooty Conf UX :: 
+  
+  Requirements : Python3 & PIP
+  
+  Setup : pip install flask
+  
+  cmd : cd Frooty/Frooty-conf && python3 app.py [port]
+  
+    After successful execution you will get the following msg printed on console
+    
+      INFO:root:Starting .... 
+      service running on http://localhost:8080...
+
+
