@@ -1,3 +1,5 @@
+#!/usr/bin/python
+
 import socket
 from scapy.all import Ether, IP, UDP, Raw
  
