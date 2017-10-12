@@ -59,10 +59,12 @@ class calix_telnet_connection(object):
 	           for cmd in command:
 	               self.telnet.write(cmd+'\r\n')
 	               self.time.sleep(self.delay)
+	       self.close()
 	       return self.telnet.read_until(".*#\r\n",self.delay)
 	    else:
 	        print "Error : Telent session is not established"
 	except Exception as err:
+	    self.close()
 	    print "Error : %s" % err
 
     def configure_command(self,command):
@@ -74,10 +76,12 @@ class calix_telnet_connection(object):
      	       self.telnet.write("cli\r\n\r\n")
 	       self.telnet.write('configure\r\n')     
 	       self.telnet.write(command+'\r\n')
+	       self.close()
 	       return self.telnet.read_until(".*#\r\n",self.delay)
 	    else:
 	        print "Error : Telnet session is not established"
 	except Exception as err:
+	    self.close()
 	    print "Error : %s" % err
 
     def configure_multiple_command(self,commands_list):
@@ -90,10 +94,12 @@ class calix_telnet_connection(object):
 	       self.telnet.write('configure\r\n')
 	       for cmd in commands_list:
 	           self.telnet.write(cmd+"\r\n")
+	       self.close()
 	       return self.telnet.read_until(".*#\r\n",self.delay)
 	    else:
 	        print "Error : Telnet session is not established"
 	except Exception as err:
+	    self.close()
 	    print "Error : %s" % err
 
 class calix_ssh_connection(object):
