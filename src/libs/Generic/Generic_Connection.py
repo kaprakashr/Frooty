@@ -61,6 +61,7 @@ class generic_telnet_connection(object):
 	           for cmd in command:
 	               self.telnet.write(cmd+'\r\n')
 	               self.time.sleep(self.delay)
+		   self.close()
 	       return self.telnet.read_until(".*[#|>]\r\n",self.delay)
 	    else:
 	        print "Error : Telent session is not established"
@@ -76,6 +77,7 @@ class generic_telnet_connection(object):
 	       self.telnet.write("\r\n\r\n")
 	       for cmd in commands_list:
 	           self.telnet.write(cmd+"\r\n")
+	       self.close()
 	       return self.telnet.read_until(".*#\r\n",self.delay)
 	    else:
 	        print "Error : Telnet session is not established"
@@ -140,6 +142,7 @@ class generic_ssh_connection(object):
                        self.ssh_conn.send(cmd+'\r\n')
                        self.time.sleep(self.delay)
 	       if self.ssh_conn.recv_ready():
+		    self.close()
                     return self.ssh_conn.recv(self.buffer)
             else:
                 print "Error : ssh session is not established"
@@ -156,6 +159,7 @@ class generic_ssh_connection(object):
 	       self.ssh_conn(command+'\r\n')
 	       self.time.sleep(self.delay)
 	       if self.ssh_conn.recv_ready():
+		   self.close()
 	           return self.ssh_conn.recv(self.buffer)
 	    else:
 	        print "Error : ssh session is not established"
@@ -177,6 +181,7 @@ class generic_ssh_connection(object):
                        self.ssh_conn.send(commands_list[command]+'\r\n')
             	       self.time.sleep(self.delay)
                if self.ssh_conn.recv_ready():
+		   self.close()
                    return self.ssh_conn.recv(self.buffer)
            else:
                print "Error : ssh is not established"	
