@@ -147,7 +147,7 @@ class calix_ssh_connection(object):
 
     def show_command(self,command,Delay=None):
         '''This API is used execute show commands'''
-	if delay is not None:
+	if Delay is not None:
 	    self.delay = Delay
 	try:
             session_op = self.connect()
