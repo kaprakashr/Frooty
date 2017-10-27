@@ -145,8 +145,10 @@ class calix_ssh_connection(object):
 	'''This API is used to set your terminal to display without any breaks in privileged mode'''
 	self.ssh_conn.send(command+'\r\r\n')
 
-    def show_command(self,command):
+    def show_command(self,command,Delay=None):
         '''This API is used execute show commands'''
+	if delay is not None:
+	    self.delay = Delay
 	try:
             session_op = self.connect()
             if self.ssh_conn != None:
