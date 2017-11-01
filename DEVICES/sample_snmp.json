@@ -1,8 +1,15 @@
-DEVICE_1 =  {
+{
+"DEVICE_1": {
     "name": "dut",
     "ip": "127.0.0.1",
+    "port" : "23",
+    "mode" : "telnet",
+    "username": "abc123",
+    "password": "abc123",
     "snmp_port": "161",
     "community_string" : "public"
-  }
+}
+}
+
   
   
