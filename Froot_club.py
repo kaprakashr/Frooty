@@ -77,20 +77,20 @@ with open(device_file) as data_file:
 print("Loaded the Device file and starting now.,")
 log.rite("Jump to device file now.,")
 count = 1
+
 for device in device_data:
-    log.rite("DEVICE : ", device)
-    if device_data.has_key("name") and device_data.has_key("ip") and device_data.has_key("port") and device_data.has_key("mode") and device_data.has_key("username") and device_data.has_key("password"):		
-        log.rite("	   NAME	        :" + device_data[device]["name"])
-        log.rite("         IP	        :" + device_data[device]["ip"])
-        log.rite("         PORT    	:" + device_data[device]["port"])
-        log.rite("         MODE    	:" + device_data[device]["mode"])
-        log.rite("         USER    	:" + device_data[device]["username"])
-        log.rite("         PASS    	:" + device_data[device]["password"])
-	if device_data.has_key("community_string") and device_data.has_key("snmp_port"):
-            log.rite("         COMM_STR          :" + device_data[device]["community_string"])
-	    log.rite("         COMM_STR          :" + device_data[device]["snmp_port"])
+    if device_data[device].has_key("name") and device_data[device].has_key("ip") and device_data[device].has_key("port") and device_data[device].has_key("mode") and device_data[device].has_key("username") and device_data[device].has_key("password"):
+        log.rite("DEVICE      :", device)
+        log.rite("NAME	      :" + device_data[device]["name"])
+        log.rite("IP	      :" + device_data[device]["ip"])
+        log.rite("PORT        :" + device_data[device]["port"])
+        log.rite("MODE        :" + device_data[device]["mode"])
+        log.rite("USER        :" + device_data[device]["username"])
+        log.rite("PASS        :" + device_data[device]["password"])
+        log.rite("COMM_STR    :" + device_data[device]["community_string"])
+        log.rite("SNMP_PORT   :" + device_data[device]["snmp_port"])
     else:
-	 print("Some parameter(name, ip, port, mode, username, password) missing in json file")
+	log.rite("Some Important parameter is missing , please check json file")
     count += 1
 #make the devices global
 __builtin__.devices = device_data
