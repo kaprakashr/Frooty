@@ -118,7 +118,7 @@ result = None
 for methods in test_case_list:
     if re.match("__",methods) is not None:
 	junk = None
-    elif re.match(".*[0-9]",methods) is not None:
+    elif re.match(".*[0-9]",methods) is not None and re.match("TEST",methods) is not None:
 	total_ran += 1
     	method_to_call = getattr(all_test_cases,methods)
     	result = method_to_call()
