@@ -3,6 +3,8 @@ from __future__ import print_function
 from pysnmp.hlapi import *
 from pysnmp.entity.rfc3413.oneliner import cmdgen
 from pysnmp.proto import rfc1902
+from pysnmp import debug
+#debug.setLogger(debug.Debug('msgproc', 'dsp', 'io', 'app'))
 
 #NOTE#
 ##Currently SNMPv1 and SNMPv2c supported###
@@ -32,6 +34,8 @@ class snmpwalker(object):
        	cmdGen = cmdgen.CommandGenerator()
 	if type(oid) == list and len(oid) >= 1:
 	    for i in range(len(oid)):
+		print("\nSNMP COMMAND : " + "snmpget -v2c -c " + self.community_string + ' ' + self.snmp_target[0] + ' ' + oid[i] + "\n")
+		print("<<<<<<<<<<<<OUTPUT>>>>>>>>>>>>>")
 	        errorIndication, errorStatus, errorIndex, varBinds = cmdGen.getCmd(
 		                                                        cmdgen.CommunityData(self.community_string),
 		                                                        cmdgen.UdpTransportTarget(self.snmp_target),oid[i]
@@ -51,23 +55,48 @@ class snmpwalker(object):
     def snmpwalk(self,oid):
         '''This api is used for snmpwalk operation'''
 	self.snmp_target = (self.host, self.snmp_port)
-	for (errorIndication,errorStatus,errorIndex,varBinds) in nextCmd(SnmpEngine(),
-                                                             CommunityData(self.community_string),
-                                                             UdpTransportTarget(self.snmp_target),
-                                                             ContextData(),
-                                                             ObjectType(ObjectIdentity(oid)),
-	                                   		     lexicographicMode=False):
-            if errorIndication:
-                print(errorIndication)
-                break
-            elif errorStatus:
-                print('%s at %s' % (errorStatus.prettyPrint(),
-                      errorIndex and varBinds[int(errorIndex) - 1][0] or '?'))
-                break
-            else:
-                for varBind in varBinds:
-                    print(varBind)
-    
+	if type(oid) == str and len(oid) == 1:
+	    print("\nSNMP COMMAND : " + "snmpwalk -v2c -c " + self.community_string + ' ' + self.snmp_target[0] + ' ' + oid[0] + "\n")
+	    print("<<<<<<<<OUTPUT>>>>>>>>>")
+	    for (errorIndication,errorStatus,errorIndex,varBinds) in nextCmd(SnmpEngine(),
+                                                                 CommunityData(self.community_string),
+                                                                 UdpTransportTarget(self.snmp_target),
+                                                                 ContextData(),
+                                                                 ObjectType(ObjectIdentity(oid)),
+	                                       		     lexicographicMode=False):
+                if errorIndication:
+                    print(errorIndication)
+                    break
+                elif errorStatus:
+                    print('%s at %s' % (errorStatus.prettyPrint(),
+                          errorIndex and varBinds[int(errorIndex) - 1][0] or '?'))
+                    break
+                else:
+                    for varBind in varBinds:
+                        print(varBind)
+   	elif type(oid) == list and len(oid) >= 1:
+	    for i in range(len(oid)):
+		print("\nSNMP COMMAND : " + "snmpwalk -v2c -c " + self.community_string + ' ' + self.snmp_target[0] + ' ' + oid[i] + "\n")
+		print("<<<<<<<<OUTPUT>>>>>>>>>")
+	        for (errorIndication,errorStatus,errorIndex,varBinds) in nextCmd(SnmpEngine(),
+                                                                     CommunityData(self.community_string),
+                                                                     UdpTransportTarget(self.snmp_target),
+                                                                     ContextData(),
+                                                                     ObjectType(ObjectIdentity(oid[i])),
+                                                                 lexicographicMode=False):
+                    if errorIndication:
+                        print(errorIndication)
+                        break
+                    elif errorStatus:
+                        print('%s at %s' % (errorStatus.prettyPrint(),
+                              errorIndex and varBinds[int(errorIndex) - 1][0] or '?'))
+                        break
+                    else:
+                        for varBind in varBinds:
+                            print(varBind)
+	else:
+	    pass
+	 
     def snmpset(self,oid,new_val,snmp_type):
         '''This api is used for oid snmpset operation'''
 	self.snmp_target = (self.host,self.snmp_port)
@@ -108,5 +137,5 @@ class snmpwalker(object):
 	else:
 	    for name, val in result:
 	        print('%s = %s' % (name.prettyPrint(), val.prettyPrint()))
-		     snmp_set_data.append(name.prettyPrint() +" = "+ val.prettyPrint())	
+		snmp_set_data.append(name.prettyPrint() +" = "+ val.prettyPrint())	
 	    return snmp_set_data
