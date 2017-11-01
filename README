@@ -19,7 +19,7 @@ How to Start with?
 
   EXAMPLE: 
 
-  >> Froot_Club -D "DEVICES/Sample_Device.json" -T "TESTCASES/Sample_TestCase.py"
+  >> python Froot_club.py -D "DEVICES/Sample_Device.json" -T "TESTCASES/Sample_TestCase.py"
 
 
  Running Frooty Conf UX :: 
