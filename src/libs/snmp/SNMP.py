@@ -4,7 +4,6 @@ from pysnmp.hlapi import *
 from pysnmp.entity.rfc3413.oneliner import cmdgen
 from pysnmp.proto import rfc1902
 from pysnmp import debug
-#debug.setLogger(debug.Debug('msgproc', 'dsp', 'io', 'app'))
 
 #NOTE#
 ##Currently SNMPv1 and SNMPv2c supported###
@@ -35,29 +34,36 @@ class snmpwalker(object):
 	if type(oid) == list and len(oid) >= 1:
 	    for i in range(len(oid)):
 		print("\nSNMP COMMAND : " + "snmpget -v2c -c " + self.community_string + ' ' + self.snmp_target[0] + ' ' + oid[i] + "\n")
+		snmp_data.append("\nSNMP COMMAND : " + "snmpget -v2c -c " + self.community_string + ' ' + self.snmp_target[0] + ' ' + oid[i] + "\n")
 		print("<<<<<<<<<<<<OUTPUT>>>>>>>>>>>>>")
+		snmp_data.append("<<<<<<<<<<<<OUTPUT>>>>>>>>>>>>>")
 	        errorIndication, errorStatus, errorIndex, varBinds = cmdGen.getCmd(
 		                                                        cmdgen.CommunityData(self.community_string),
 		                                                        cmdgen.UdpTransportTarget(self.snmp_target),oid[i]
-		                                                        )
-                if not errorIndication:
+		                                                     )
+                if errorIndication:
     	              snmp_data.append(varBinds)
-                else:
-		      display_errors = True
-    	              if display_errors:
-    	                  print('ERROR DETECTED: ')
-    	                  print('    %-16s %-60s' % ('error_message', errorIndication))
-    	                  print('    %-16s %-60s' % ('error_status', errorStatus))
-    	                  print('    %-16s %-60s' % ('error_index', errorIndex))
+		      break
+                elif errorStatus:
+    	              print('ERROR DETECTED: ');snmp_data.append('ERROR DETECTED: ')
+    	              print('    %-16s %-60s' % ('error_message', errorIndication));snmp_data.append('    %-16s %-60s' % ('error_message', errorIndication))
+    	              print('    %-16s %-60s' % ('error_status', errorStatus));snmp_data('    %-16s %-60s' % ('error_status', errorStatus))
+    	              print('    %-16s %-60s' % ('error_index', errorIndex)); snmp_data.append('    %-16s %-60s' % ('error_index', errorIndex))
     	              return None
-	return self.extract_data(snmp_data)
+		else:
+		    for varBind in varBinds:
+			print(varBind);snmp_data.append(varBind)
+	return snmp_data
 
     def snmpwalk(self,oid):
         '''This api is used for snmpwalk operation'''
+	snmpwalk_result = []
 	self.snmp_target = (self.host, self.snmp_port)
 	if type(oid) == str and len(oid) == 1:
 	    print("\nSNMP COMMAND : " + "snmpwalk -v2c -c " + self.community_string + ' ' + self.snmp_target[0] + ' ' + oid[0] + "\n")
+	    snmpwalk_result.append("\nSNMP COMMAND : " + "snmpwalk -v2c -c " + self.community_string + ' ' + self.snmp_target[0] + ' ' + oid[0] + "\n")
 	    print("<<<<<<<<OUTPUT>>>>>>>>>")
+	    snmpwalk_result.append("<<<<<<<<OUTPUT>>>>>>>>>")
 	    for (errorIndication,errorStatus,errorIndex,varBinds) in nextCmd(SnmpEngine(),
                                                                  CommunityData(self.community_string),
                                                                  UdpTransportTarget(self.snmp_target),
@@ -65,7 +71,7 @@ class snmpwalker(object):
                                                                  ObjectType(ObjectIdentity(oid)),
 	                                       		     lexicographicMode=False):
                 if errorIndication:
-                    print(errorIndication)
+                    snmpwalk_result.append(errorIndication)
                     break
                 elif errorStatus:
                     print('%s at %s' % (errorStatus.prettyPrint(),
@@ -73,11 +79,17 @@ class snmpwalker(object):
                     break
                 else:
                     for varBind in varBinds:
-                        print(varBind)
+  			if varBind is None:
+			    continue
+			else:
+                            print(varBind)
+			    snmpwalk_result.append(varBind)
    	elif type(oid) == list and len(oid) >= 1:
 	    for i in range(len(oid)):
 		print("\nSNMP COMMAND : " + "snmpwalk -v2c -c " + self.community_string + ' ' + self.snmp_target[0] + ' ' + oid[i] + "\n")
+		snmpwalk_result.append("\nSNMP COMMAND : " + "snmpwalk -v2c -c " + self.community_string + ' ' + self.snmp_target[0] + ' ' + oid[i] + "\n")
 		print("<<<<<<<<OUTPUT>>>>>>>>>")
+		snmpwalk_result.append("<<<<<<<<OUTPUT>>>>>>>>>")
 	        for (errorIndication,errorStatus,errorIndex,varBinds) in nextCmd(SnmpEngine(),
                                                                      CommunityData(self.community_string),
                                                                      UdpTransportTarget(self.snmp_target),
@@ -85,7 +97,7 @@ class snmpwalker(object):
                                                                      ObjectType(ObjectIdentity(oid[i])),
                                                                  lexicographicMode=False):
                     if errorIndication:
-                        print(errorIndication)
+                        snmpwalk_result.append(errorIndication)
                         break
                     elif errorStatus:
                         print('%s at %s' % (errorStatus.prettyPrint(),
@@ -93,49 +105,67 @@ class snmpwalker(object):
                         break
                     else:
                         for varBind in varBinds:
-                            print(varBind)
+			    if varBind is None:
+			        continue
+			    else:
+                                print(varBind)
+				snmpwalk_result.append(varBind)
 	else:
 	    pass
-	 
-    def snmpset(self,oid,new_val,snmp_type):
+	return snmpwalk_result
+
+    def snmpset(self,*args):
         '''This api is used for oid snmpset operation'''
 	self.snmp_target = (self.host,self.snmp_port)
 	cg = cmdgen.CommandGenerator()
 	comm_data = cmdgen.CommunityData('my-manager', self.community_string)
 	transport = cmdgen.UdpTransportTarget(self.snmp_target)
-	if snmp_type == "s":
-	      variables = (oid, rfc1902.OctetString(new_val))
-	      errIndication, errStatus, errIndex, result = cg.setCmd(comm_data, transport,variables)
-	elif snmp_type == "i":
-	      variables = (oid, rfc1902.Integer(new_val))
-	      errIndication, errStatus, errIndex, result = cg.setCmd(comm_data, transport,variables)
-	elif snmp_type == "o":
-	      variables = (oid, rfc1902.Bits(new_val))
-              errIndication, errStatus, errIndex, result = cg.setCmd(comm_data, transport,variables)
-	elif snmp_type == "t":
-	      variables = (oid, rfc1902.TimeTicks(new_val))
-              errIndication, errStatus, errIndex, result = cg.setCmd(comm_data, transport,variables)
-	elif snmp_type == "u":
-	      variables = (oid, rfc1902.Unsigned32(new_val))
-              errIndication, errStatus, errIndex, result = cg.setCmd(comm_data, transport,variables)
-	elif snmp_type == "ip":
-	      variables = (oid, rfc1902.IpAddress(new_val))
-              errIndication, errStatus, errIndex, result = cg.setCmd(comm_data, transport,variables)
-	elif snmp_type == "U":
-	      variables = (oid, rfc1902.Gauge32(new_val))
-              errIndication, errStatus, errIndex, result = cg.setCmd(comm_data, transport,variables)
-	else:
-	     pass
-
+	snmpset_data = []
+	for i in range(len(args[0])):
+	    print("\nSNMP COMMAND : " + "snmpset -v2c -c " + self.community_string + ' ' + self.snmp_target[0] + ' ' + args[0][i][0] +' '+ args[0][i][2] +' '+args[0][i][1]+"\n")
+	    snmpset_data.append("\nSNMP COMMAND : " + "snmpset -v2c -c " + self.community_string + ' ' + self.snmp_target[0] + ' ' + args[0][i][0] +' '+ args[0][i][2] +' '+args[0][i][1]+"\n")
+	    print("<<<<<<<<OUTPUT>>>>>>>>>")
+            snmpset_data.append("<<<<<<<<OUTPUT>>>>>>>>>")
+	    if args[0][i][2] == "s":
+	          variables = (args[0][i][0], rfc1902.OctetString(args[0][i][1]))
+	          errIndication, errStatus, errIndex, result = cg.setCmd(comm_data, transport,variables)
+	          snmpset_data.append(result)
+	    elif args[0][i][2] == "i":
+	          variables = (args[0][i][0], rfc1902.Integer(args[0][i][1]))
+	          errIndication, errStatus, errIndex, result = cg.setCmd(comm_data, transport,variables)
+	          snmpset_data.append(result)
+	    elif args[0][i][2] == "o":
+	          variables = (args[0][i][0], rfc1902.Bits(args[0][i][1]))
+                  errIndication, errStatus, errIndex, result = cg.setCmd(comm_data, transport,variables)
+	          snmpset_data.append(result)
+	    elif args[0][i][2] == "t":
+	          variables = (args[0][i][0], rfc1902.TimeTicks(args[0][i][1]))
+                  errIndication, errStatus, errIndex, result = cg.setCmd(comm_data, transport,variables)
+	          snmpset_data.append(result)
+	    elif args[0][i][2] == "u":
+	          variables = (args[0][i][0], rfc1902.Unsigned32(args[0][i][1]))
+                  errIndication, errStatus, errIndex, result = cg.setCmd(comm_data, transport,variables)
+	          snmpset_data.append(result)
+	    elif args[0][i][2] == "ip":
+	          variables = (args[0][i][0], rfc1902.IpAddress(args[0][i][1]))
+                  errIndication, errStatus, errIndex, result = cg.setCmd(comm_data, transport,variables)
+   	          snmpset_data.append(result)
+	    elif args[0][i][2] == "U":
+	          variables = (args[0][i][0], rfc1902.Gauge32(args[0][i][1]))
+                  errIndication, errStatus, errIndex, result = cg.setCmd(comm_data, transport,variables)
+	          snmpset_data.append(result)
+	    else:
+	         pass
 
       	# Check for errors and print out results
-	snmp_set_data = []
 	if errIndication:
 	    print(errIndication)
+	    snmpset_data.append(errIndication)
 	elif errStatus:
-	    print('%s at %s' % (errStatus.prettyPrint(),errIndex and result[int(errIndex) - 1][0] or '?'))
+	    print("REASON :" + '%s at %s' % (errStatus.prettyPrint(),errIndex and result[int(errIndex) - 1][0] or '?'))
+	    snmpset_data.append("REASON : "+ '%s at %s' % (errStatus.prettyPrint(),errIndex and result[int(errIndex) - 1][0] or '?'))
 	else:
 	    for name, val in result:
 	        print('%s = %s' % (name.prettyPrint(), val.prettyPrint()))
-		snmp_set_data.append(name.prettyPrint() +" = "+ val.prettyPrint())	
-	    return snmp_set_data
+		snmpset_data.append(name.prettyPrint() +" = "+ val.prettyPrint())	
+        return snmpset_data
