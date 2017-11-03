@@ -13,7 +13,7 @@ import subprocess
 #internal
 from src.libs.cisco.cisco_con import *
 from src.libs.logging.log import *
-from print_log import *
+from src.libs.logging.print_log import *
 import time
 from datetime import datetime
 import __builtin__
@@ -83,7 +83,6 @@ total_fail_result = []
 total_fail_log = []
 
 for i in range(len(testcases)):
-    Print("<<<<<<<<<<<<<START TESTCASE EXECUTION>>>>>>>>>>>>",color=1)
     #initialize the logging object
     ccwd = os.getcwd()
     log_folder = str(ccwd) + "/LOGS/"
@@ -157,7 +156,6 @@ for i in range(len(testcases)):
         Print(str(method_to_call) + "-->RESULT: " + "FAILED",log,color=3)
     else:
 	pass
-    Print("<<<<<<<<<<<<<END TESTCASE EXECUTION>>>>>>>>>>>>",color=1)
 #Generate Consolidate Report 
 reg_path_loc = re.compile('BATCH_FILE\/(.*)')
 reg_path_loc.findall(test_case_file)[0]
