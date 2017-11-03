@@ -1,0 +1,12 @@
+<<<<<<<<<<<<<<SUMMARY OF RESULTS>>>>>>>>>>>>>>>
+TOTAL TEST CASES EXECUTED : 3
+TOTAL TEST CASES PASSED : 3
+=======LOG PATH========
+1./root/saroj/TEST/Frooty/LOGS/snmp_example_walk_2017-11-03_11:09:42.log
+2./root/saroj/TEST/Frooty/LOGS/snmp_example_get_2017-11-03_11:09:43.log
+3./root/saroj/TEST/Frooty/LOGS/snmp_example_set_2017-11-03_11:09:44.log
+TOTAL TEST CASES FAILED : 0
+=======LOG PATH========
+NA
+TOTAL TEST CASES BLOCKED: 0
+NA
