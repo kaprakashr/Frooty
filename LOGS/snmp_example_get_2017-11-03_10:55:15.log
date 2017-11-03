@@ -1,0 +1,29 @@
+FROOTY->STARTING RUN: 	2017-11-03_10:55:15
+
+[10:55:15]: Init log->/root/saroj/TEST/Frooty/LOGS/
+[10:55:15]: SELECTED DEVICE FILE-> DEVICES/sample_snmp.json
+
+[10:55:15]: SELECTED TEST CASE FILE-> BATCH_FILE/SMOKE_SANITY
+
+[10:55:15]: Loaded the Device file and starting now.,
+[10:55:15]: Jump to device file now.,
+[10:55:15]: DEVICE       :DEVICE_1
+[10:55:15]: NAME	      :dut
+[10:55:15]: IP	      :127.0.0.1
+[10:55:15]: PORT         :23
+[10:55:15]: MODE         :telnet
+[10:55:15]: USER         :abc123
+[10:55:15]: PASS         :abc123
+[10:55:15]: COMM_STR     :public
+[10:55:15]: SNMP_PORT    :161
+[10:55:16]: 
+SNMP COMMAND : snmpget -v2c -c public 127.0.0.1 1.3.6.1.2.1.1.1.0
+
+[10:55:16]: <<<<<<<<<<<<OUTPUT>>>>>>>>>>>>>
+[10:55:16]: SNMPv2-MIB::sysDescr.0 = Linux aricent 4.4.0-92-generic #115-Ubuntu SMP Thu Aug 10 09:04:33 UTC 2017 x86_64
+[10:55:16]: 
+SNMP COMMAND : snmpget -v2c -c public 127.0.0.1 1.3.6.1.2.1.1.6.0
+
+[10:55:16]: <<<<<<<<<<<<OUTPUT>>>>>>>>>>>>>
+[10:55:16]: SNMPv2-MIB::sysLocation.0 = Sitting on the Dock of the Bay
+[10:55:16]: <function TEST_CASE_002 at 0x7f5c2931cf50>-->RESULT: PASSED
