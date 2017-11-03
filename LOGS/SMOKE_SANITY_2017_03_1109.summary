@@ -1,0 +1,28 @@
+
+------------------------------------------------------
+  FROOTY AUTOMATION ENVIRONMENT
+------------------------------------------------------
+
+WebLink For results: <>
+Result Exported to DB: NO
+
+#-------TEST CASE STATISTICS------------
+TOTAL TEST CASES EXECUTED : 3
+TOTAL TEST CASES PASSED : 3
+TOTAL TEST CASES FAILED : 0
+TOTAL TEST CASES BLOCKED: 0
+
+SUCCESS RATE = 100%
+
+#------TEST RUN METRICS---------
+TOTAL TIME TAKEN  : HH:MM:SS
+snmp_example_walk : HH:MM:SS
+snmp_example_get  : HH:MM:SS
+
+#------Diagnostics of Individual Tests-------------
+snmp_example_walk--> /root/saroj/TEST/Frooty/LOGS/snmp_example_walk_2017-11-03_11:09:42.log
+snmp_example_get---> /root/saroj/TEST/Frooty/LOGS/snmp_example_get_2017-11-03_11:09:43.log
+snmp_example_set---> /root/saroj/TEST/Frooty/LOGS/snmp_example_set_2017-11-03_11:09:44.log
+
+#--Topology Details----------
+<Printing in JSON Format: Copy this for future use>
