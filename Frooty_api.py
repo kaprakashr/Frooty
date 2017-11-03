@@ -38,9 +38,9 @@ if sys.argv[1] == "--help" or sys.argv[1] == "-h":
     print ("----------------------------\n")
     print ("USAGE: ")
     print ("[-D] [Filename] (or) [--device] [Filename]")
-    print ("[-T] [Filename] (or) [--case] [Filename]\n")
+    print ("[-B] [Filename] (or) [--case] [Filename]\n")
     print ("EXAMPLE: ") 
-    print ("Froot_club.py -D \"DEVICES/Sample_Device.json\" -T \"TESTCASES/Sample_Test_Case.py\"\n\n")
+    print ("Froot_club.py -D \"DEVICES/Sample_Device.json\" -B \"BATCH_FILE/SMOKE_SANITY\"\n\n")
     exit(0)
 
 #Exract Parmeters
@@ -110,8 +110,8 @@ for i in range(len(testcases)):
     for device in device_data:
         if device_data[device].has_key("name") and device_data[device].has_key("ip") and device_data[device].has_key("port") and device_data[device].has_key("mode") and device_data[device].has_key("username") and device_data[device].has_key("password"):
             Print("DEVICE       :" + device,log)
-            Print("NAME	      :" + device_data[device]["name"],log)
-            Print("IP	      :" + device_data[device]["ip"],log)
+            Print("NAME	     :" + device_data[device]["name"],log)
+            Print("IP	        :" + device_data[device]["ip"],log)
             Print("PORT         :" + device_data[device]["port"],log)
             Print("MODE         :" + device_data[device]["mode"],log)
             Print("USER         :" + device_data[device]["username"],log)
@@ -164,7 +164,7 @@ summary_report_loc = str(cwd) + "/SUMMARY_REPORT/" + reg_path_loc.findall(test_c
 
 f = open(summary_report_loc, 'w')
 f.write("<<<<<<<<<<<<<<SUMMARY OF RESULTS>>>>>>>>>>>>>>>\n")
-f.write("TOTAL TEST CASES EXECUTED : " + str(total_ran) + "\n")
+f.write("TOTAL TEST CASES EXECUTED : " + str(len(total_pass_result)+len(total_fail_result)) + "\n")
 f.write("TOTAL TEST CASES PASSED : " + str(len(total_pass_result)) + "\n")
 f.write("=======LOG PATH========\n")
 for i in range(len(total_pass_log)):
