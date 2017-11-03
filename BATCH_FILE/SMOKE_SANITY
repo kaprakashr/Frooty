@@ -1,4 +1,9 @@
-#Testcase Section
+###################################################
+#NOTE						  #
+#Comment the testcases if you dont want to execute#
+###################################################
+#TESTCASE SECTION#
+##################
 #TESTCASES/snmp_example.py
 #TESTCASES/snmp_example_1.py
 TESTCASES/snmp_example_2.py
