@@ -6,7 +6,7 @@ sys.path.append(import_path)
 from src.libs.cisco.cisco_con import *
 from src.libs.string.verify import *
 from src.libs.snmp.SNMP import *
-from print_log import *
+from src.libs.logging.print_log import *
 
 def TEST_CASE_001():
     obj = snmpwalker(devices['DEVICE_1'])
