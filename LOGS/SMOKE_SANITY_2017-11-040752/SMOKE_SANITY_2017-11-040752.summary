@@ -1,0 +1,26 @@
+#-------------------------------------------------#
+          FROOTY AUTOMATION ENVIRONMENT            
+#-------------------------------------------------#
+WebLink For results: <>
+Result Exported to DB: NO
+#-------TEST CASE STATISTICS------------
+TOTAL TEST CASES EXECUTED : 2
+TOTAL TEST CASES PASSED   : 2
+TOTAL TEST CASES FAILED   : 0
+TOTAL TEST CASES BLOCKED  : 2
+
+SUCCESS RATE : 100%
+
+#-------TEST RUN METRICS----------------
+snmp_example_walk_TEST_CASE_001 : 0:00:00
+snmp_example_walk_TEST_CASE_002 : 0:00:00
+TOTAL TIME TAKEN : 0:00:00
+
+#-------Diagnostics of Individual Tests------
+#-------PASSED LOGS---------
+1./root/saroj/TEST/Batch_Feature/Frooty/LOGS/SMOKE_SANITY_2017-11-040752/snmp_example_walk_TEST_CASE_001_2017-11-04_07:52:28.log
+2./root/saroj/TEST/Batch_Feature/Frooty/LOGS/SMOKE_SANITY_2017-11-040752/snmp_example_walk_TEST_CASE_002_2017-11-04_07:52:28.log
+#-------FAILED LOGS---------
+NA
+#-------Topology Details----------
+{"DEVICE_1": {"username": "abc123", "name": "dut", "ip": "127.0.0.1", "snmp_port": "161", "mode": "telnet", "password": "abc123", "port": "23", "community_string": "public"}}
