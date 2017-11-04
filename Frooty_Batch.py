@@ -82,105 +82,132 @@ total_pass_log = []
 total_fail_result = []
 total_fail_log = []
 
-for i in range(len(testcases)):
-    #initialize the logging object
-    ccwd = os.getcwd()
-    log_folder = str(ccwd) + "/LOGS/"
-    __builtin__.log = logger(log_folder, testcases[i])
-    log = __builtin__.log
-    Print("Init log->" + log_folder,log) 
+reg_path_loc = re.compile('BATCH_FILE\/(.*)')
+ccwd = os.getcwd()
+log_folder = os.path.join(str(ccwd) + "/LOGS/", reg_path_loc.findall(test_case_file)[0] +"_"+ re.sub(r'\s+', '', datetime.now().strftime("%Y-%m-%d%H%M")) + "/")
+if not os.path.exists(log_folder):
+    os.makedirs(log_folder)
 
-    #Start
-    if device_file == " " or test_case_file == " " or device_file == None or test_case_file == None:
-        Print ("Please pass correct parameters \n",log)
-        Print ("ERROR: \nEither Device or Test Case file is empty \n",log)
-        exit(0)
-    else:
-	Print("SELECTED DEVICE FILE-> " + device_file + "\n" ,log)
-	Print("SELECTED TEST CASE FILE-> " + test_case_file + "\n" ,log)
-    
-    with open(device_file) as data_file:
-        device_data = json.load(data_file)
-    
-    #dump the device details
-    Print("Loaded the Device file and starting now.,",log)
-    Print("Jump to device file now.,",log)
-    count = 1
-    
-    for device in device_data:
-        if device_data[device].has_key("name") and device_data[device].has_key("ip") and device_data[device].has_key("port") and device_data[device].has_key("mode") and device_data[device].has_key("username") and device_data[device].has_key("password"):
-            Print("DEVICE       :" + device,log)
-            Print("NAME	     :" + device_data[device]["name"],log)
-            Print("IP	        :" + device_data[device]["ip"],log)
-            Print("PORT         :" + device_data[device]["port"],log)
-            Print("MODE         :" + device_data[device]["mode"],log)
-            Print("USER         :" + device_data[device]["username"],log)
-            Print("PASS         :" + device_data[device]["password"],log)
-            Print("COMM_STR     :" + device_data[device]["community_string"],log)
-            Print("SNMP_PORT    :" + device_data[device]["snmp_port"],log)
-        else:
-    	    Print("Some Important parameter is missing , please check json file",log)
-        count += 1
-    #make the devices global
-    __builtin__.devices = device_data
-    
-    #identify the test cases
-    #TESTCASES/Sample_TestCase.py
-    temp_load_module = testcase_path[0] + "." + testcases[i] 
+timer_details_with_tc_name = []
+for i in range(len(testcases)):
+    temp_load_module = testcase_path[0] + "." + testcases[i]
     all_test_cases = importlib.import_module(temp_load_module)
-    
-    #Now call all the test cases one by one automatically
-    #set all vars ahead of execution
+    test_case_list = dir(all_test_cases)
+
     total_ran = 0
     total_pass = 0
     total_fail = 0
     total_block = 0
-    test_case_list = dir(all_test_cases)
     result = None
     for methods in test_case_list:
         if re.match("__",methods) is not None:
-    	    junk = None
+            junk = None
         elif re.match(".*[0-9]",methods) is not None and re.match("TEST",methods) is not None:
-    	    total_ran += 1
+            __builtin__.log = logger(log_folder, testcases[i]+'_'+methods)
+	    log = __builtin__.log
+	    #Start
+            if device_file == " " or test_case_file == " " or device_file == None or test_case_file == None:
+                Print("Please pass correct parameters \n",log)
+                Print("ERROR: \nEither Device or Test Case file is empty \n",log)
+                exit(0)
+            else:
+		start_date_time , st_time = start_time()
+	        Print("\nFROOTY->START TIME : " + start_date_time + "\n",log)
+                Print("Init log->" + log_folder,log)
+                Print("SELECTED DEVICE FILE-> " + device_file + "\n",log)
+                Print("SELECTED TEST CASE FILE-> " + test_case_file + "\n",log)
+                
+            with open(device_file) as data_file:
+                device_data = json.load(data_file)
+            #dump the device details
+            Print("Loaded the Device file and starting now.,",log)
+            Print("Jump to device file now.,",log)
+	    count = 1
+
+            for device in device_data:
+                if device_data[device].has_key("name") and device_data[device].has_key("ip") and device_data[device].has_key("port") and device_data[device].has_key("mode") and device_data[device].has_key("username") and device_data[device].has_key("password"):
+                    Print("DEVICE      :"+ device,log)
+                    Print("NAME	     :" + device_data[device]["name"],log)
+                    Print("IP	       :" + device_data[device]["ip"],log)
+                    Print("PORT        :" + device_data[device]["port"],log)
+                    Print("MODE        :" + device_data[device]["mode"],log)
+                    Print("USER        :" + device_data[device]["username"],log)
+                    Print("PASS        :" + device_data[device]["password"],log)
+                    Print("COMM_STR    :" + device_data[device]["community_string"],log)
+                    Print("SNMP_PORT   :" + device_data[device]["snmp_port"],log)
+                else:
+            	    Print("Some Important parameter is missing , please check json file",log)
+                count += 1
+	    #make the devices global
+	    __builtin__.devices = device_data
+            total_ran += 1
             method_to_call = getattr(all_test_cases,methods)
             result = method_to_call()
-    if result == True:
-        total_pass += 1
-	total_pass_result.append(total_pass)
-        total_pass_log.append(log.fname)
-        Print(str(method_to_call) + "-->RESULT: " + "PASSED",log,color=2)	
-    elif result == False:
-        total_fail += 1
-	total_fail_result.append(total_fail)
- 	total_fail_log.append(log.fname)
-        Print(str(method_to_call) + "-->RESULT: " + "FAILED",log,color=3)
-    else:
-	pass
+            if result == True:
+                total_pass += 1
+                total_pass_result.append(total_pass)
+                total_pass_log.append(log.fname)
+                Print(str(method_to_call) + "-->RESULT: " + "PASSED",log,color=2)       
+            elif result == False:
+                total_fail += 1
+                total_fail_result.append(total_fail)
+                total_fail_log.append(log.fname)
+                Print(str(method_to_call) + "-->RESULT: " + "FAILED",log,color=3)
+            else:
+                pass
+	    end_date_time , en_time = end_time()
+	    Print("\nFROOTY->END TIME : " + end_date_time + "\n",log)
+	    total_time = total_time_taken(en_time,st_time)
+	    Print("\nTOTAL TIME TAKEN : "+ str(total_time)+"\n",log)
+	    timer_details_with_tc_name.append([testcases[i]+'_'+methods,str(total_time)])
 #Generate Consolidate Report 
-reg_path_loc = re.compile('BATCH_FILE\/(.*)')
-reg_path_loc.findall(test_case_file)[0]
-cwd = os.getcwd()
-summary_report_loc = str(cwd) + "/SUMMARY_REPORT/" + reg_path_loc.findall(test_case_file)[0] +"_"+ re.sub(r'\s+', '', datetime.now().strftime("%Y-%m-%d_%H:%M:%S")) 
-
+summary_report_loc = log_folder + reg_path_loc.findall(test_case_file)[0] +"_"+ re.sub(r'\s+', '', datetime.now().strftime("%Y-%m-%d%H%M"))+".summary"
 f = open(summary_report_loc, 'w')
-f.write("<<<<<<<<<<<<<<SUMMARY OF RESULTS>>>>>>>>>>>>>>>\n")
+f.write("#-------------------------------------------------#\n")
+f.write("          FROOTY AUTOMATION ENVIRONMENT            \n")
+f.write("#-------------------------------------------------#\n")
+f.write("WebLink For results: <>\n")
+f.write("Result Exported to DB: NO\n")
+f.write("#-------TEST CASE STATISTICS------------\n")
 f.write("TOTAL TEST CASES EXECUTED : " + str(len(total_pass_result)+len(total_fail_result)) + "\n")
-f.write("TOTAL TEST CASES PASSED : " + str(len(total_pass_result)) + "\n")
-f.write("=======LOG PATH========\n")
-for i in range(len(total_pass_log)):
-    f.write(str(i+1)+'.'+total_pass_log[i]+'\n')
-f.write("TOTAL TEST CASES FAILED : " + str(len(total_fail_result)) + "\n")
-f.write("=======LOG PATH========\n")
+f.write("TOTAL TEST CASES PASSED   : " + str(len(total_pass_result)) + "\n")
+f.write("TOTAL TEST CASES FAILED   : " + str(len(total_fail_result)) + "\n")
+f.write("TOTAL TEST CASES BLOCKED  : " + str(tc_block) + "\n\n")
+sucess_rate = (len(total_pass_result)/len(total_pass_result)+len(total_fail_result))*100
+f.write("SUCCESS RATE : "+str(sucess_rate)+"%\n\n")
+f.write("#-------TEST RUN METRICS----------------\n")
+total_time_taken_info = []
+for i in range(len(timer_details_with_tc_name)):
+     for j in range(len(timer_details_with_tc_name[i])):
+         if j == 1:
+             continue
+         else:
+             f.write("%s : %s" % (timer_details_with_tc_name[i][j],timer_details_with_tc_name[i][j+1]) + "\n")
+             total_time_taken_info.append(timer_details_with_tc_name[i][j+1])
+
+import datetime
+sum = datetime.timedelta()
+for i in total_time_taken_info:
+    (h, m, s) = i.split(':')
+    d = datetime.timedelta(hours=int(h), minutes=int(m), seconds=int(s))
+    sum += d
+f.write("TOTAL TIME TAKEN : "+ str(sum)+"\n\n")
+f.write("#-------Diagnostics of Individual Tests------\n")
+f.write("#-------PASSED LOGS---------\n")
+if total_pass_log != []:
+    for i in range(len(total_pass_log)):
+        f.write(str(i+1)+'.'+total_pass_log[i]+'\n')
+else:
+    f.write("NA\n")
+f.write("#-------FAILED LOGS---------\n")
 if total_fail_log != []:
     for j in range(len(total_fail_log)):
         f.write(str(j+1)+'.'+total_fail_log[j]+'\n')
 else:
     f.write('NA\n')
-f.write("TOTAL TEST CASES BLOCKED: " + str(tc_block) + "\n")
-if blocked_testcases != []:
-    for k in range(len(blocked_testcases)):
-        f.write(str(k+1)+'.'+blocked_testcases[k]+'.py'+'\n')
-else:
-    f.write('NA\n')
+f.write("#-------Topology Details----------\n")
+json = json.dumps(device_data)
+f.write(json)
 f.close()
+
 
