@@ -8,6 +8,7 @@ import re
 import os
 import time
 from datetime import datetime
+from src.libs.logging.print_log import start_time,end_time,total_time_taken
 
 #Basic logging class
 class logger:
@@ -22,8 +23,8 @@ class logger:
 	name_tmp = name_tmp[0].split("/")
 	self.fname = self.log_loc + name_tmp[-1] + "_" + re.sub(r'\s+', '', datetime.now().strftime("%Y-%m-%d_%H:%M:%S"))  + ".log"	
 	self.fhandle = open(self.fname,'w')
-	self.fhandle.write("FROOTY->STARTING RUN: 	" + re.sub(r'\s+', '', datetime.now().strftime("%Y-%m-%d_%H:%M:%S")) + "\n\n")
-
+	#self.fhandle.write("FROOTY->STARTING RUN: 	" + re.sub(r'\s+', '', datetime.now().strftime("%Y-%m-%d_%H:%M:%S")) + "\n\n")
+       
     def rite(self,*args):
 	temp_str = ""
 	temp_str_list = []

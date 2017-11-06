@@ -4,7 +4,7 @@
 ###################################################
 #TESTCASE SECTION#
 ##################
-#TESTCASES/snmp_example.py
-#TESTCASES/snmp_example_1.py
-TESTCASES/snmp_example_2.py
+#TESTCASES/snmp_example_set.py
+TESTCASES/snmp_example_walk.py
+TESTCASES/snmp_example_get.py
 
