@@ -174,11 +174,21 @@ f = open(summary_report_loc, 'w')
 f.write("#-------------------------------------------------#\n")
 f.write("          FROOTY AUTOMATION ENVIRONMENT            \n")
 f.write("#-------------------------------------------------#\n")
-f.write("WebLink For results: <>\n")
-f.write("Result Exported to DB: NO\n")
+f.write("WebLink For results : <>\n")
+f.write("Result Exported to DB : NO\n")
 f.write("Test Start Time : <" + start_date_time +">\n")
 r = random.randint(100000,999999)
 f.write("Test Run ID : <" + str(r) + ">\n")
+total_time_taken_info = []
+for i in range(len(timer_details_with_tc_name)):
+    total_time_taken_info.append(timer_details_with_tc_name[i][3])
+import datetime
+sum = datetime.timedelta()
+for i in total_time_taken_info:
+    (h, m, s) = i.split(':')
+    d = datetime.timedelta(hours=int(h), minutes=int(m), seconds=int(s))
+    sum += d
+f.write("Test Run Time : " + str(sum) + "\n")
 f.write("Test Batch Name : " + reg_path_loc.findall(test_case_file)[0] + "\n")
 reg_topology_name = re.compile('DEVICES\/(.*)\.json')
 f.write("Test Topology Name :" + reg_topology_name.findall(device_file)[0] + "\n")
@@ -194,20 +204,10 @@ sucess_rate = (len(total_pass_result)/len(total_pass_result)+len(total_fail_resu
 f.write("SUCCESS RATE : "+str(sucess_rate)+"%\n\n")
 f.write("#-------TEST RUN METRICS----------------\n")
 f.write("FEATURE\t\t\t<<>>\tTESTCASE NAME\t<<>>\tRESULT\t<<>>\tRUN TIME\n")
-total_time_taken_info = []
 test_plans = []
 for i in range(len(timer_details_with_tc_name)):
     f.write("%s\t<<>>\t%s\t<<>>\t%s\t<<>>\t%s"  % (timer_details_with_tc_name[i][0],timer_details_with_tc_name[i][1], timer_details_with_tc_name[i][2], timer_details_with_tc_name[i][3])+"\n")
     test_plans.append(timer_details_with_tc_name[i][0])
-    total_time_taken_info.append(timer_details_with_tc_name[i][3])
-
-import datetime
-sum = datetime.timedelta()
-for i in total_time_taken_info:
-    (h, m, s) = i.split(':')
-    d = datetime.timedelta(hours=int(h), minutes=int(m), seconds=int(s))
-    sum += d
-f.write("\nTest Run Time: " + str(sum) + "\n")
 f.write("#-------Diagnostics of Individual Tests------\n")
 f.write("#-------LOGS---------\n")
 if total_pass_log != []:
