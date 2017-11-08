@@ -10,6 +10,7 @@ import os
 from pprint import pprint
 import importlib
 import subprocess
+import random
 #internal
 from src.libs.cisco.cisco_con import *
 from src.libs.logging.log import *
@@ -89,6 +90,7 @@ if not os.path.exists(log_folder):
     os.makedirs(log_folder)
 
 timer_details_with_tc_name = []
+batch_start_date_time , batch_start_time = start_time()
 for i in range(len(testcases)):
     temp_load_module = testcase_path[0] + "." + testcases[i]
     all_test_cases = importlib.import_module(temp_load_module)
@@ -147,43 +149,57 @@ for i in range(len(testcases)):
                 total_pass += 1
                 total_pass_result.append(total_pass)
                 total_pass_log.append(log.fname)
-                Print(str(method_to_call) + "-->RESULT: " + "PASSED",log,color=2)       
+		testcase_status = str(method_to_call) + "-->RESULT: " + "PASSED"
+                Print(testcase_status,log,color=2)       
             elif result == False:
                 total_fail += 1
                 total_fail_result.append(total_fail)
                 total_fail_log.append(log.fname)
-                Print(str(method_to_call) + "-->RESULT: " + "FAILED",log,color=3)
+		testcase_status = str(method_to_call) + "-->RESULT: " + "FAILED"
+                Print(testcase_status,log,color=3)
             else:
                 pass
 	    end_date_time , en_time = end_time()
 	    Print("\nFROOTY->END TIME : " + end_date_time + "\n",log)
 	    total_time = total_time_taken(en_time,st_time)
 	    Print("\nTOTAL TIME TAKEN : "+ str(total_time)+"\n",log)
-	    timer_details_with_tc_name.append([testcases[i]+'_'+methods,str(total_time)])
+	    if 'RESULT: PASSED' in testcase_status:
+	        timer_details_with_tc_name.append([testcases[i],methods, "PASS",str(total_time)])
+	    else:
+		timer_details_with_tc_name.append([testcases[i],methods, "FAIL",str(total_time)])
 #Generate Consolidate Report 
 summary_report_loc = log_folder + reg_path_loc.findall(test_case_file)[0] +"_"+ re.sub(r'\s+', '', datetime.now().strftime("%Y-%m-%d%H%M"))+".summary"
+total_run_time = []
 f = open(summary_report_loc, 'w')
 f.write("#-------------------------------------------------#\n")
 f.write("          FROOTY AUTOMATION ENVIRONMENT            \n")
 f.write("#-------------------------------------------------#\n")
 f.write("WebLink For results: <>\n")
 f.write("Result Exported to DB: NO\n")
+f.write("Test Start Time : <" + start_date_time +">\n")
+r = random.randint(100000,999999)
+f.write("Test Run ID : <" + str(r) + ">\n")
+f.write("Test Batch Name : " + reg_path_loc.findall(test_case_file)[0] + "\n")
+reg_topology_name = re.compile('DEVICES\/(.*)\.json')
+f.write("Test Topology Name :" + reg_topology_name.findall(device_file)[0] + "\n")
+f.write("Features :\n")
+for i in testcases:
+    f.write(i + "\n")
 f.write("#-------TEST CASE STATISTICS------------\n")
-f.write("TOTAL TEST CASES EXECUTED : " + str(len(total_pass_result)+len(total_fail_result)) + "\n")
-f.write("TOTAL TEST CASES PASSED   : " + str(len(total_pass_result)) + "\n")
-f.write("TOTAL TEST CASES FAILED   : " + str(len(total_fail_result)) + "\n")
-f.write("TOTAL TEST CASES BLOCKED  : " + str(tc_block) + "\n\n")
+f.write("TOTAL TEST CASES EXECUTED   : " + str(len(total_pass_result)+len(total_fail_result)) + "\n")
+f.write("TOTAL TEST CASES PASSED     : " + str(len(total_pass_result)) + "\n")
+f.write("TOTAL TEST CASES FAILED     : " + str(len(total_fail_result)) + "\n")
+f.write("TOTAL TEST CASES BLOCKED    : " + str(tc_block) + "\n\n")
 sucess_rate = (len(total_pass_result)/len(total_pass_result)+len(total_fail_result))*100
 f.write("SUCCESS RATE : "+str(sucess_rate)+"%\n\n")
 f.write("#-------TEST RUN METRICS----------------\n")
+f.write("FEATURE\t\t\t<<>>\tTESTCASE NAME\t<<>>\tRESULT\t<<>>\tRUN TIME\n")
 total_time_taken_info = []
+test_plans = []
 for i in range(len(timer_details_with_tc_name)):
-     for j in range(len(timer_details_with_tc_name[i])):
-         if j == 1:
-             continue
-         else:
-             f.write("%s : %s" % (timer_details_with_tc_name[i][j],timer_details_with_tc_name[i][j+1]) + "\n")
-             total_time_taken_info.append(timer_details_with_tc_name[i][j+1])
+    f.write("%s\t<<>>\t%s\t<<>>\t%s\t<<>>\t%s"  % (timer_details_with_tc_name[i][0],timer_details_with_tc_name[i][1], timer_details_with_tc_name[i][2], timer_details_with_tc_name[i][3])+"\n")
+    test_plans.append(timer_details_with_tc_name[i][0])
+    total_time_taken_info.append(timer_details_with_tc_name[i][3])
 
 import datetime
 sum = datetime.timedelta()
@@ -191,20 +207,15 @@ for i in total_time_taken_info:
     (h, m, s) = i.split(':')
     d = datetime.timedelta(hours=int(h), minutes=int(m), seconds=int(s))
     sum += d
-f.write("TOTAL TIME TAKEN : "+ str(sum)+"\n\n")
+f.write("\nTest Run Time: " + str(sum) + "\n")
 f.write("#-------Diagnostics of Individual Tests------\n")
-f.write("#-------PASSED LOGS---------\n")
+f.write("#-------LOGS---------\n")
 if total_pass_log != []:
     for i in range(len(total_pass_log)):
-        f.write(str(i+1)+'.'+total_pass_log[i]+'\n')
-else:
-    f.write("NA\n")
-f.write("#-------FAILED LOGS---------\n")
+        f.write(test_plans[i]+'\t<<>>\t'+total_pass_log[i]+'\n')
 if total_fail_log != []:
     for j in range(len(total_fail_log)):
-        f.write(str(j+1)+'.'+total_fail_log[j]+'\n')
-else:
-    f.write('NA\n')
+        f.write(test_plans[i]+'\t<<>>\t'+total_fail_log[j]+'\n')
 f.write("#-------Topology Details----------\n")
 json = json.dumps(device_data)
 f.write(json)
