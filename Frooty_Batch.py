@@ -15,6 +15,7 @@ import random
 from src.libs.cisco.cisco_con import *
 from src.libs.logging.log import *
 from src.libs.logging.print_log import *
+from src.libs.frooty_db import *
 import time
 from datetime import datetime
 import __builtin__
@@ -25,6 +26,7 @@ test_case_file = None
 __builtin__.log = None
 device_data = None
 __builtin__.devices = None
+export_to_db = True
 
 # FORMAT:
 #	--help		: print the format
@@ -47,17 +49,23 @@ if sys.argv[1] == "--help" or sys.argv[1] == "-h":
 #Exract Parmeters
 catch_device = False
 catch_case = False
+catch_db = False
 for var in sys.argv:
     if re.match("-D",var) is not None or re.match("--device", var) is not None:
 	catch_device = True
     elif re.match("-B",var) is not None or re.match("--case", var) is not None:
 	catch_case = True
+    elif re.match("-DB", var) is not None or re.match("--sql",var) is not None:
+	catch_db = True
     elif catch_device == True:
 	device_file = var
 	catch_device = False
     elif catch_case == True:
 	test_case_file = var
 	catch_case = False 
+    elif catch_db == True:
+	export_to_db = True
+	catch_db = False	
 
 reg_ignore_line = re.compile('#TESTCASES.*')
 reg_testcase = re.compile('.*\/(.*)\.py')
@@ -169,15 +177,31 @@ for i in range(len(testcases)):
 		timer_details_with_tc_name.append([testcases[i],methods, "FAIL",str(total_time)])
 #Generate Consolidate Report 
 summary_report_loc = log_folder + reg_path_loc.findall(test_case_file)[0] +"_"+ re.sub(r'\s+', '', datetime.now().strftime("%Y-%m-%d%H%M"))+".summary"
+#check the connection to the sqlite db is good or not
+if export_to_db == True:
+    tmp = check_db_connection("/home/kalyan/SQLite/Frooty/DB/","Frooty.db")
+    if tmp:
+	print("Success Connecting to DB")
+    else:
+	export_to_db = False
+	print("ERROR: Failed to connect to DB")
 total_run_time = []
+export_summary = {}
+export_test_case = {}
 f = open(summary_report_loc, 'w')
 f.write("#-------------------------------------------------#\n")
 f.write("          FROOTY AUTOMATION ENVIRONMENT            \n")
 f.write("#-------------------------------------------------#\n")
 f.write("WebLink For results : <>\n")
-f.write("Result Exported to DB : NO\n")
+if export_to_db == True: 
+    f.write("Result Exported to DB : YES\n")
+else:
+    f.write("Result Exported to DB : NO\n")
 f.write("Test Start Time : <" + start_date_time +">\n")
+export_summary['START_TIME'] = start_date_time #DB
+export_summary['LOG_LOCATION'] = log_folder #DB
 r = random.randint(100000,999999)
+export_summary['TEST_ID'] = r #DB
 f.write("Test Run ID :" + str(r) + "\n")
 total_time_taken_info = []
 for i in range(len(timer_details_with_tc_name)):
@@ -189,12 +213,22 @@ for i in total_time_taken_info:
     d = datetime.timedelta(hours=int(h), minutes=int(m), seconds=int(s))
     sum += d
 f.write("Test Run Time : " + str(sum) + "\n")
+export_summary['RUN_TIME'] = str(sum) #DB
 f.write("Test Batch Name : " + reg_path_loc.findall(test_case_file)[0] + "\n")
+export_summary['BATCH_NAME'] = reg_path_loc.findall(test_case_file)[0] #DB
 reg_topology_name = re.compile('DEVICES\/(.*)\.json')
 f.write("Test Topology Name :" + reg_topology_name.findall(device_file)[0] + "\n")
+export_summary['TOPOLOGY_NAME'] = reg_topology_name.findall(device_file)[0] #DB
+temp_features_names = ""
 f.write("Features :\n")
 for i in testcases:
     f.write(i + ",")
+    temp_features_names = temp_features_names + i + ","
+export_summary['FEATURES'] = temp_features_names #DB
+export_summary['PASS'] = len(total_pass_result) #DB
+export_summary['FAIL'] = len(total_fail_result) #DB
+export_summary['BLOCKED'] = tc_block #DB
+export_summary['NEVER_RAN'] = 0 #DB #BUG "Not supported yet"
 f.write("#-------TEST CASE STATISTICS------------\n")
 f.write("TOTAL TEST CASES EXECUTED   : " + str(len(total_pass_result)+len(total_fail_result)) + "\n")
 f.write("TOTAL TEST CASES PASSED     : " + str(len(total_pass_result)) + "\n")
@@ -221,4 +255,5 @@ json = json.dumps(device_data)
 f.write(json)
 f.close()
 
-
+#Export the Data to the table now
+insert_test_summary("/home/kalyan/SQLite/Frooty/DB/","Frooty.db",export_summary)
