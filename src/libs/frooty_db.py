@@ -30,3 +30,8 @@ def insert_test_summary(db_location, db_name, input_data):
     connection = sqlite3.connect(temp)
     if connection:
 	connection.execute('INSERT INTO TEST_SUMMARY VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)', (input_data['id'], input_data['TEST_ID'], input_data['BATCH_NAME'], input_data['START_TIME'], input_data['TOPOLOGY_NAME'], input_data['FEATURES'], input_data['DIGEST'], input_data['STATUS'], input_data['PASS'], input_data['FAIL'], input_data['BLOCKED'], input_data['NEVER_RAN'], input_data['RUN_TIME'], input_data['TEST_CASE_NAME'], input_data['LOG_LOCATION']))
+	connection.commit()
+	connection.close()
+	return 1
+    else:
+	return 0
