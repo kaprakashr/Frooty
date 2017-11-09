@@ -178,7 +178,7 @@ f.write("WebLink For results : <>\n")
 f.write("Result Exported to DB : NO\n")
 f.write("Test Start Time : <" + start_date_time +">\n")
 r = random.randint(100000,999999)
-f.write("Test Run ID : <" + str(r) + ">\n")
+f.write("Test Run ID :" + str(r) + "\n")
 total_time_taken_info = []
 for i in range(len(timer_details_with_tc_name)):
     total_time_taken_info.append(timer_details_with_tc_name[i][3])
@@ -194,7 +194,7 @@ reg_topology_name = re.compile('DEVICES\/(.*)\.json')
 f.write("Test Topology Name :" + reg_topology_name.findall(device_file)[0] + "\n")
 f.write("Features :\n")
 for i in testcases:
-    f.write(i + "\n")
+    f.write(i + ",")
 f.write("#-------TEST CASE STATISTICS------------\n")
 f.write("TOTAL TEST CASES EXECUTED   : " + str(len(total_pass_result)+len(total_fail_result)) + "\n")
 f.write("TOTAL TEST CASES PASSED     : " + str(len(total_pass_result)) + "\n")
