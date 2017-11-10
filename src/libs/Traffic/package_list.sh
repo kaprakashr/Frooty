@@ -35,4 +35,7 @@ pip install pysnmp
 #Install hnmp
 pip install hnmp
 
+#Install color pkg
+pip install colored
+
 
